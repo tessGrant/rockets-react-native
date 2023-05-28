@@ -9,7 +9,8 @@ export function formatDate(timestamp: string) {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
+        timeZone: 'America/Los_Angeles'
     }).format(new Date(timestamp))
 }
 
@@ -20,6 +21,7 @@ export function formatDateTime(timestamp: string) {
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
-        timeZoneName: 'short'
+        timeZoneName: 'short',
+        timeZone: 'America/Los_Angeles'
     }).format(new Date(timestamp))
 }
