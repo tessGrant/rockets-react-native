@@ -1,5 +1,5 @@
-import React, {VFC} from 'react'
-import {FlatList, SafeAreaView} from 'react-native'
+import React, {VFC, useEffect, useState} from 'react'
+import {FlatList, SafeAreaView, Text} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {Launch} from '../api/types'
 import {useLaunchesPaginated} from '../api/use-space-x'
@@ -7,7 +7,8 @@ import {LAUNCHES_STACK} from '../navigation/navigation'
 import {LaunchDetailLayout} from './launch-details'
 import {LaunchListCell} from '../components/launch-list-cell'
 import {EmptyState} from '../components/empty-state'
-
+import { useSelector } from 'react-redux'
+import { State } from '../store/reducer'
 const PAGE_SIZE = 10
 
 const LaunchesList: VFC = () => {
@@ -16,6 +17,8 @@ const LaunchesList: VFC = () => {
         order: 'desc',
         sort: 'launch_date_utc'
     })
+
+    const launches = useSelector((state: State) => state.launches)
 
     const goToLaunch = (launch: Launch) => {
         Navigation.push(
@@ -30,14 +33,16 @@ const LaunchesList: VFC = () => {
 
     return (
         <SafeAreaView>
+            <Text>{`Favorite Launches: ${launches.length}`}</Text>
             <FlatList
                 data={data?.flat() ?? []}
                 renderItem={item => (
-                    <LaunchListCell launch={item.item} onPress={goToLaunch} />
+                    <LaunchListCell launch={item.item} onPress={goToLaunch} isFavorite={false} />
                 )}
                 onEndReached={() => setSize(size + 1)}
                 style={{height: '100%'}}
             />
+
         </SafeAreaView>
     )
 }

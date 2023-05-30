@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useContext, useEffect, useState} from 'react'
 import {
     Image,
     Platform,
@@ -11,11 +11,20 @@ import {color} from '../util/colors'
 import {formatDate} from '../util/format-date'
 import {Launch} from '../api/types'
 import {format as timeAgo} from 'timeago.js'
+import { addLaunchToFavorites, removeLaunchFromFavorites } from '../store/actions'
+import { useDispatch } from 'react-redux'
 
 export const LaunchListCell: FC<{
-    launch: Launch
-    onPress: (launch: Launch) => void
-}> = ({launch, onPress}) => {
+    launch: Launch;
+    onPress: (launch: Launch) => void;
+    isFavorite?: boolean;
+}> = ({launch, onPress, isFavorite}) => {
+    
+    const dispatch = useDispatch();
+
+    const [isStarred, setIsStarred] = useState(isFavorite);
+    const [favoriteColor, setFavoriteColor] = useState(color.blue700);
+    
     const imageUrl =
         launch.links.flickr_images[0] ?? launch.links.mission_patch_small
 
@@ -23,40 +32,67 @@ export const LaunchListCell: FC<{
         ? color.green700
         : color.red700
 
+    // const favoriteColor = isStarred ? color.pink700 : color.shade400
+
+    const toggleHandler = () => { 
+        if(isStarred){
+            setIsStarred(false);
+            setFavoriteColor(color.blue700)
+            return dispatch(removeLaunchFromFavorites(launch.flight_number));
+        } else {
+            setIsStarred(true);
+            setFavoriteColor(color.pink700)
+            return dispatch(addLaunchToFavorites(launch));
+        } 
+    };
+
+    useEffect(()=> {
+        if(isStarred){setFavoriteColor(color.pink700)}
+    }, [isStarred])
+
     return (
-        <TouchableOpacity
-            key={launch.flight_number}
-            onPress={() => onPress(launch)}
-            style={styles.launchOuterContainer}>
-            <View style={styles.launchInnerContainer}>
-                <Image source={{uri: imageUrl}} style={styles.launchImage} />
-                <View style={styles.textContainer}>
-                    <View style={styles.textRow}>
-                        <Text style={[styles.successText, {backgroundColor}]}>
-                            {launch.launch_success ? 'SUCCESS' : 'FAILURE'}
+        <>
+            <TouchableOpacity
+                key={`${launch.flight_number}+toggle`}
+                onPress={toggleHandler}
+                style={[styles.favoriteButton, {backgroundColor: favoriteColor}]}>
+                <Text style={styles.successText}>{isStarred ? 'FAVORITE' : 'ADD TO FAVORITE'}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                key={launch.flight_number}
+                onPress={() => onPress(launch)}
+                style={styles.launchOuterContainer}>
+                <View style={styles.launchInnerContainer}>
+                    <Image source={{uri: imageUrl}} style={styles.launchImage} />
+                    <View style={styles.textContainer}>
+                        <View style={styles.textRow}>
+                            <Text style={[styles.successText, {backgroundColor}]}>
+                                {launch.launch_success ? 'SUCCESS' : 'FAILURE'}
+                            </Text>
+                            <Text style={[styles.smallText, {paddingLeft: 8}]}>
+                                {launch.rocket.rocket_name}
+                            </Text>
+                            <Text style={styles.dot}>{'•'}</Text>
+                            <Text style={styles.smallText}>
+                                {launch.launch_site.site_name}
+                            </Text>
+                        </View>
+                        <Text style={styles.launchTitle}>
+                            {launch.mission_name}
                         </Text>
-                        <Text style={[styles.smallText, {paddingLeft: 8}]}>
-                            {launch.rocket.rocket_name}
-                        </Text>
-                        <Text style={styles.dot}>{'•'}</Text>
-                        <Text style={styles.smallText}>
-                            {launch.launch_site.site_name}
-                        </Text>
-                    </View>
-                    <Text style={styles.launchTitle}>
-                        {launch.mission_name}
-                    </Text>
-                    <View style={[styles.textRow, {paddingTop: 4}]}>
-                        <Text style={styles.date}>
-                            {formatDate(launch.launch_date_utc)}
-                        </Text>
-                        <Text style={styles.time}>
-                            {timeAgo(launch.launch_date_utc)}
-                        </Text>
+                        <View style={[styles.textRow, {paddingTop: 4}]}>
+                            <Text style={styles.date}>
+                                {formatDate(launch.launch_date_utc)}
+                            </Text>
+                            <Text style={styles.time}>
+                                {timeAgo(launch.launch_date_utc)}
+                            </Text>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </>
     )
 }
 
@@ -77,6 +113,7 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     launchInnerContainer: {
+        position: 'relative',
         width: '100%',
         backgroundColor: '#fff',
         borderRadius: 16,
@@ -128,5 +165,17 @@ const styles = StyleSheet.create({
     time: {
         fontSize: 12,
         color: color.shade500
+    },
+    favoriteButton: {
+        position: 'absolute',
+        right: 35,
+        top: 20,
+        width: 80,
+        height: 35,
+        zIndex: 100,
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4
     }
 })

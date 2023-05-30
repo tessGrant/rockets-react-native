@@ -1,10 +1,11 @@
+import React from 'react'
 import {LayoutTabsChildren, Navigation} from 'react-native-navigation'
 import {color} from '../util/colors'
 import LaunchesList, {
     LaunchesListLayout,
     LaunchesListLayoutName
 } from '../screens/launches-list'
-import {ImageRequireSource} from 'react-native'
+import {ComponentProvider, ImageRequireSource} from 'react-native'
 import LaunchDetails, {
     LaunchDetailLayout,
     LaunchDetailLayoutName
@@ -17,22 +18,30 @@ import PadDetails, {
     PadDetailLayout,
     PadDetailLayoutName
 } from '../screens/pad-details'
+import FavoritesList, { FavoritesListLayout, FavoritesListLayoutName } from '../screens/favorite-list'
+import { Provider } from 'react-redux'
+import { legacy_createStore as createStore} from 'redux'
+import { rootReducer } from '../store/reducer'
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const store = createStore(rootReducer);
 
 export const registerScreens = () => {
     Navigation.events().registerAppLaunchedListener(() => {
         Navigation.setRoot({
             root: {
                 bottomTabs: {
-                    children: [launchesTab, padsTab]
+                    children: [launchesTab, padsTab, favoriteTab]
                 }
             }
         })
     })
 
-    Navigation.registerComponent(LaunchesListLayoutName, () => LaunchesList)
-    Navigation.registerComponent(LaunchDetailLayoutName, () => LaunchDetails)
-    Navigation.registerComponent(PadsListLayoutName, () => PadsList)
-    Navigation.registerComponent(PadDetailLayoutName, () => PadDetails)
+    Navigation.registerComponent(LaunchesListLayoutName, () => () => <Provider store={store}><LaunchesList /></Provider>, () => LaunchesList)
+    Navigation.registerComponent(LaunchDetailLayoutName, () => (props) => <Provider store={store}><LaunchDetails {...props} /></Provider>, () => LaunchDetails)
+    Navigation.registerComponent(PadsListLayoutName, () => () => <Provider store={store}><PadsList /></Provider>, () => PadsList)
+    Navigation.registerComponent(PadDetailLayoutName, () => (props) => <Provider store={store}><PadDetails {...props} /></Provider>, () => PadDetails)
+    Navigation.registerComponent(FavoritesListLayoutName, () => () => <Provider store={store}><FavoritesList /></Provider>, () => FavoritesList)
 }
 
 const bottomTab = (icon: ImageRequireSource) => ({
@@ -74,6 +83,24 @@ const padsTab: LayoutTabsChildren = {
         ],
         options: {
             bottomTab: bottomTab(require('../../assets/icons/bullseye.png'))
+        }
+    }
+}
+
+// Favorite List
+
+export const FAVORITE_STACK = 'FavoriteStack'
+
+const favoriteTab: LayoutTabsChildren = {
+    stack: {
+        id: FAVORITE_STACK,
+        children: [
+            {
+                component: FavoritesListLayout()
+            } 
+        ],
+        options: {
+            bottomTab: bottomTab(require('../../assets/icons/star.png'))
         }
     }
 }

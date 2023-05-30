@@ -1,5 +1,5 @@
 import React, {VFC} from 'react'
-import {FlatList, SafeAreaView} from 'react-native'
+import {FlatList, SafeAreaView, Text} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {EmptyState} from '../components/empty-state'
 import {PadListCell} from '../components/pad-list-cell'
