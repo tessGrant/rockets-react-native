@@ -11,8 +11,9 @@ import {color} from '../util/colors'
 import {formatDate} from '../util/format-date'
 import {Launch} from '../api/types'
 import {format as timeAgo} from 'timeago.js'
-import { addLaunchToFavorites, removeLaunchFromFavorites } from '../store/actions'
+import {addToFavorites, removeFromFavorites} from '../store/actions'
 import { useDispatch } from 'react-redux'
+import { ActionFavoriteButton } from './actionFavoriteButton'
 
 export const LaunchListCell: FC<{
     launch: Launch;
@@ -20,45 +21,20 @@ export const LaunchListCell: FC<{
     isFavorite?: boolean;
 }> = ({launch, onPress, isFavorite}) => {
     
-    const dispatch = useDispatch();
-
-    const [isStarred, setIsStarred] = useState(isFavorite);
-    const [favoriteColor, setFavoriteColor] = useState(color.blue700);
-    
-    const imageUrl =
-        launch.links.flickr_images[0] ?? launch.links.mission_patch_small
+    const imageUrl = launch.links.flickr_images[0] ?? launch.links.mission_patch_small;
 
     const backgroundColor = launch.launch_success
         ? color.green700
         : color.red700
 
-    // const favoriteColor = isStarred ? color.pink700 : color.shade400
-
-    const toggleHandler = () => { 
-        if(isStarred){
-            setIsStarred(false);
-            setFavoriteColor(color.blue700)
-            return dispatch(removeLaunchFromFavorites(launch.flight_number));
-        } else {
-            setIsStarred(true);
-            setFavoriteColor(color.pink700)
-            return dispatch(addLaunchToFavorites(launch));
-        } 
-    };
-
-    useEffect(()=> {
-        if(isStarred){setFavoriteColor(color.pink700)}
-    }, [isStarred])
-
     return (
         <>
-            <TouchableOpacity
-                key={`${launch.flight_number}+toggle`}
-                onPress={toggleHandler}
-                style={[styles.favoriteButton, {backgroundColor: favoriteColor}]}>
-                <Text style={styles.successText}>{isStarred ? 'FAVORITE' : 'ADD TO FAVORITE'}</Text>
-            </TouchableOpacity>
-
+            <ActionFavoriteButton
+                item={launch}
+                itemId={launch.flight_number}
+                itemName={'launch'}
+                isFavoriteItem={Boolean(isFavorite)}
+             />
             <TouchableOpacity
                 key={launch.flight_number}
                 onPress={() => onPress(launch)}
@@ -165,17 +141,5 @@ const styles = StyleSheet.create({
     time: {
         fontSize: 12,
         color: color.shade500
-    },
-    favoriteButton: {
-        position: 'absolute',
-        right: 35,
-        top: 20,
-        width: 80,
-        height: 35,
-        zIndex: 100,
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4
     }
 })

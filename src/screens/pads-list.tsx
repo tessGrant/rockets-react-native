@@ -28,7 +28,7 @@ const PadsList: VFC = () => {
             <FlatList
                 data={data?.flat() ?? []}
                 renderItem={item => (
-                    <PadListCell pad={item.item} onPress={goToPad} />
+                    <PadListCell pad={item.item} onPress={goToPad} isFavorite={false} />
                 )}
                 onEndReached={() => setSize(size + 1)}
                 style={{height: '100%'}}

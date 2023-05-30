@@ -2,13 +2,15 @@ import React, {FC} from 'react'
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {color} from '../util/colors'
 import {Pad} from '../api/types'
+import { ActionFavoriteButton } from './actionFavoriteButton'
 
 interface Props {
-    pad: Pad
-    onPress: (pad: Pad) => void
+    pad: Pad;
+    onPress: (pad: Pad) => void;
+    isFavorite: boolean
 }
 
-export const PadListCell: FC<Props> = ({pad, onPress}) => {
+export const PadListCell: FC<Props> = ({pad, onPress, isFavorite}) => {
     const statusColor =
         pad.status === 'active'
             ? color.green700
@@ -17,37 +19,45 @@ export const PadListCell: FC<Props> = ({pad, onPress}) => {
             : color.red700
 
     return (
-        <TouchableOpacity
-            key={pad.id}
-            onPress={() => onPress(pad)}
-            style={styles.padOuterContainer}>
-            <View style={styles.padInnerContainer}>
-                <View style={styles.textContainer}>
-                    <View style={styles.textRow}>
-                        <Text
-                            style={[
-                                styles.statusText,
-                                {backgroundColor: statusColor}
-                            ]}>
-                            {pad.status.toUpperCase()}
+        <>
+            <ActionFavoriteButton
+                item={pad}
+                itemId={pad.id}
+                itemName={'pad'}
+                isFavoriteItem={Boolean(isFavorite)}
+            />
+            <TouchableOpacity
+                key={pad.id}
+                onPress={() => onPress(pad)}
+                style={styles.padOuterContainer}>
+                <View style={styles.padInnerContainer}>
+                    <View style={styles.textContainer}>
+                        <View style={styles.textRow}>
+                            <Text
+                                style={[
+                                    styles.statusText,
+                                    {backgroundColor: statusColor}
+                                ]}>
+                                {pad.status.toUpperCase()}
+                            </Text>
+                        </View>
+                        <View style={[styles.textRow, {paddingTop: 4}]}>
+                            <Text style={styles.smallText}>
+                                {pad.attempted_launches + ' ATTEMPTED'}
+                            </Text>
+                            <Text style={styles.dot}>{'•'}</Text>
+                            <Text style={styles.smallText}>
+                                {pad.successful_launches + ' SUCCEEDED'}
+                            </Text>
+                        </View>
+                        <Text style={styles.padTitle}>{pad.name}</Text>
+                        <Text style={styles.vehicles}>
+                            {pad.vehicles_launched.join(', ')}
                         </Text>
                     </View>
-                    <View style={[styles.textRow, {paddingTop: 4}]}>
-                        <Text style={styles.smallText}>
-                            {pad.attempted_launches + ' ATTEMPTED'}
-                        </Text>
-                        <Text style={styles.dot}>{'•'}</Text>
-                        <Text style={styles.smallText}>
-                            {pad.successful_launches + ' SUCCEEDED'}
-                        </Text>
-                    </View>
-                    <Text style={styles.padTitle}>{pad.name}</Text>
-                    <Text style={styles.vehicles}>
-                        {pad.vehicles_launched.join(', ')}
-                    </Text>
                 </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </>
     )
 }
 
