@@ -1,7 +1,6 @@
 import { Launch, Pad } from "../api/types";
 
 export const addToFavorites = (item: Launch | Pad, itemName: string) => {
-    console.log('Action fired!!!!')
     return {
       type: 'ADD_LAUNCH_OR_PAD_TO_FAVORITES',
       payload: item,

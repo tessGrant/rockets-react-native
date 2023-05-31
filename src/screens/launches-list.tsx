@@ -33,7 +33,6 @@ const LaunchesList: VFC = () => {
 
     return (
         <SafeAreaView>
-            <Text>{`Favorite Launches: ${launches.length}`}</Text>
             <FlatList
                 data={data?.flat() ?? []}
                 renderItem={item => (

@@ -21,8 +21,8 @@ export const PadListCell: FC<Props> = ({pad, onPress, isFavorite}) => {
     return (
         <>
             <ActionFavoriteButton
+                id={pad.id}
                 item={pad}
-                itemId={pad.id}
                 itemName={'pad'}
                 isFavoriteItem={Boolean(isFavorite)}
             />

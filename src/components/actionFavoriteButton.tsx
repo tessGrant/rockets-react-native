@@ -6,15 +6,15 @@ import { addToFavorites, removeFromFavorites } from '../store/actions';
 import { Launch, Pad } from '../api/types';
 
 type ButtonProps = {
+    id: number;
     item: Launch | Pad;
-    itemId: number;
     itemName: 'launch' | 'pad';
     isFavoriteItem: boolean;
 };
 
 export const ActionFavoriteButton: FC<ButtonProps> = ({
+    id,
     item,
-    itemId,
     itemName,
     isFavoriteItem,
 }) => {
@@ -24,7 +24,7 @@ export const ActionFavoriteButton: FC<ButtonProps> = ({
     const handlelOnPress = () => { 
         if(isStarred){
             setIsStarred(false);
-            return dispatch(removeFromFavorites(itemId, itemName));
+            return dispatch(removeFromFavorites(id, itemName));
         } else {
             setIsStarred(true);
             return dispatch(addToFavorites(item, itemName));
@@ -32,7 +32,7 @@ export const ActionFavoriteButton: FC<ButtonProps> = ({
     };
     return (
         <TouchableOpacity
-            key={`${itemId} + toggled`}
+            key={`${id} + toggled`}
             onPress={() => handlelOnPress()}
             style={[styles.favoriteButton, {backgroundColor: favoriteColor}]}>
             <Text style={styles.successText}>{isStarred ? 'FAVORITE' : 'ADD TO FAVORITE'}</Text>

@@ -17,7 +17,7 @@ export interface State {
 export const rootReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case 'ADD_LAUNCH_OR_PAD_TO_FAVORITES':
-            if(action.itemName === 'pad'){
+            if(action.objectName === 'pad'){
                 return {
                     ...state,
                     pads: [...state.pads, action.payload]
@@ -29,7 +29,7 @@ export const rootReducer = (state = initialState, action: any) => {
                 };
             }
     case 'REMOVE_LAUNCH_OR_PAD_FROM_FAVORITES':
-        if(action.itemName === 'pad'){
+        if(action.objectName === 'pad'){
             return {
                 ...state,
                 pads: state.pads.filter((item: Pad)=>item.id !== action.payload),

@@ -30,8 +30,8 @@ export const LaunchListCell: FC<{
     return (
         <>
             <ActionFavoriteButton
-                item={launch}
-                itemId={launch.flight_number}
+                id={launch.flight_number}
+                item={launch ?? launch}
                 itemName={'launch'}
                 isFavoriteItem={Boolean(isFavorite)}
              />
