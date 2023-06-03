@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useState} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {
     Image,
     Platform,
@@ -12,28 +12,45 @@ import {formatDate} from '../util/format-date'
 import {Launch} from '../api/types'
 import {format as timeAgo} from 'timeago.js'
 import {addToFavorites, removeFromFavorites} from '../store/actions'
-import { useDispatch } from 'react-redux'
-import { ActionFavoriteButton } from './actionFavoriteButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { FavoriteButton } from './favorite-button'
+import { State } from '../store/reducer'
 
 export const LaunchListCell: FC<{
     launch: Launch;
     onPress: (launch: Launch) => void;
-    isFavorite?: boolean;
+    isFavorite?:boolean;
 }> = ({launch, onPress, isFavorite}) => {
-    
     const imageUrl = launch.links.flickr_images[0] ?? launch.links.mission_patch_small;
-
     const backgroundColor = launch.launch_success
         ? color.green700
         : color.red700
+    
+    const dispatch = useDispatch();
+    const favoriteLaunches = useSelector((state: State) => state.favoriteLaunches)
+    const [isStarred, setIsStarred] = useState(isFavorite);
+
+
+    const handlelOnPress = () => { 
+        if(isStarred){
+            return dispatch(removeFromFavorites(launch.flight_number, 'launch'));
+        } else {
+            return dispatch(addToFavorites(launch, 'launch'));
+        } 
+    };
+
+    useEffect(()=>{
+        const isFavoriteButtonState = favoriteLaunches.find(obj => obj.flight_number === launch.flight_number);
+        setIsStarred(Boolean(isFavoriteButtonState))
+    }, [favoriteLaunches])
+
 
     return (
         <>
-            <ActionFavoriteButton
+            <FavoriteButton
                 id={launch.flight_number}
-                item={launch ?? launch}
-                itemName={'launch'}
-                isFavoriteItem={Boolean(isFavorite)}
+                isFavoriteItem={Boolean(isStarred)}
+                onPress={handlelOnPress}
              />
             <TouchableOpacity
                 key={launch.flight_number}

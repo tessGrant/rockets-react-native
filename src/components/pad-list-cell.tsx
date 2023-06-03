@@ -1,13 +1,16 @@
-import React, {FC} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {color} from '../util/colors'
 import {Pad} from '../api/types'
-import { ActionFavoriteButton } from './actionFavoriteButton'
+import { FavoriteButton } from './favorite-button'
+import { useDispatch, useSelector } from 'react-redux'
+import { State } from '../store/reducer'
+import { addToFavorites, removeFromFavorites } from '../store/actions'
 
 interface Props {
     pad: Pad;
     onPress: (pad: Pad) => void;
-    isFavorite: boolean
+    isFavorite?: boolean
 }
 
 export const PadListCell: FC<Props> = ({pad, onPress, isFavorite}) => {
@@ -18,13 +21,29 @@ export const PadListCell: FC<Props> = ({pad, onPress, isFavorite}) => {
             ? color.yellow700
             : color.red700
 
+    const dispatch = useDispatch();
+    const favoritePads = useSelector((state: State) => state.favoritePads)
+    const [isStarred, setIsStarred] = useState(isFavorite);
+
+    const handlelOnPress = () => { 
+        if(isStarred){
+            return dispatch(removeFromFavorites(pad.id, 'pad'));
+        } else {
+            return dispatch(addToFavorites(pad, 'pad'));
+        } 
+    };
+
+    useEffect(()=>{
+        const isFavoriteButtonState = favoritePads.find(obj => obj.id === pad.id);
+        setIsStarred(Boolean(isFavoriteButtonState))
+    }, [favoritePads])
+
     return (
         <>
-            <ActionFavoriteButton
+            <FavoriteButton
                 id={pad.id}
-                item={pad}
-                itemName={'pad'}
-                isFavoriteItem={Boolean(isFavorite)}
+                isFavoriteItem={Boolean(isStarred)}
+                onPress={() => handlelOnPress()}
             />
             <TouchableOpacity
                 key={pad.id}

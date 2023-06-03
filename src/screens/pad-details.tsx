@@ -12,16 +12,39 @@ import {usePad, useRecentLaunches} from '../api/use-space-x'
 import {LaunchDetailLayout} from './launch-details'
 import {styles} from './pad-details.styles'
 import {ComponentId} from '../navigation/types'
+import { useDispatch, useSelector } from 'react-redux'
+import { State } from '../store/reducer'
+import { addToFavorites, removeFromFavorites } from '../store/actions'
+import { FavoriteButton } from '../components/favorite-button'
 
 interface Props {
-    siteId: string
+    siteId: string;
+    isFavorite?: boolean;
 }
 
-const PadDetails: FC<Props & ComponentId> = ({siteId, componentId}) => {
+const PadDetails: FC<Props & ComponentId> = ({siteId, isFavorite, componentId}) => {
     const {data: pad} = usePad(siteId, {})
     const {data: launches} = useRecentLaunches(pad?.site_id)
 
     const [gradientColors] = useState([randomColor(), randomColor()])
+
+    const dispatch = useDispatch();
+    const favoritePads = useSelector((state: State) => state.favoritePads)
+    const [isStarred, setIsStarred] = useState(isFavorite);
+
+    const handlelOnPress = () => { 
+        if(isStarred){
+            return dispatch(removeFromFavorites(pad?.id!, 'pad'));
+        } else {
+            return dispatch(addToFavorites(pad!, 'pad'));
+        } 
+    };
+
+    useEffect(()=>{
+        const isFavoriteButtonState = favoritePads.find(obj => obj.id === pad?.id);
+        setIsStarred(Boolean(isFavoriteButtonState))
+    }, [favoritePads])
+
 
     useEffect(() => {
         if (pad?.name) {
@@ -60,6 +83,11 @@ const PadDetails: FC<Props & ComponentId> = ({siteId, componentId}) => {
                         <Text style={styles.missionNameText}>
                             {pad.site_name_long}
                         </Text>
+                        <FavoriteButton
+                            id={pad.id}
+                            isFavoriteItem={Boolean(isStarred)}
+                            onPress={handlelOnPress}
+                        />
                         <View style={styles.subtitleContainer}>
                             <Text
                                 style={[

@@ -3,42 +3,54 @@ import { Launch, Pad } from "../api/types";
 export interface State {
     launches: Launch[];
     pads: Pad[];
-    addToFavorites: (item: Launch | Pad) => void;
-    removeFromFavorites: (itemId: number) => void;
+    favoriteLaunches: Launch[];
+    favoritePads: Pad[];
   }
   
   const initialState: State = {
     launches: [],
     pads: [],
-    addToFavorites: () => {},
-    removeFromFavorites: () => {}
+    favoriteLaunches:[],
+    favoritePads: [],
   };
 
 export const rootReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case 'ADD_LAUNCH_OR_PAD_TO_FAVORITES':
+        case 'GET_LAUNCHES_OR_PADS':
             if(action.objectName === 'pad'){
                 return {
                     ...state,
-                    pads: [...state.pads, action.payload]
+                    pads: action.payload
                 }
             } else {
                 return {
                     ...state,
-                    launches: [...state.launches, action.payload]
+                    launches: action.payload
                 };
             }
-    case 'REMOVE_LAUNCH_OR_PAD_FROM_FAVORITES':
-        if(action.objectName === 'pad'){
+        case 'ADD_LAUNCH_OR_PAD_TO_FAVORITES':
+            if(action.objectName === 'pad'){
+                return {
+                    ...state,
+                    favoritePads: [...state.favoritePads, action.payload]
+                }
+            } else {
+                return {
+                    ...state,
+                    favoriteLaunches: [...state.favoriteLaunches, action.payload]
+                };
+            }
+        case 'REMOVE_LAUNCH_OR_PAD_FROM_FAVORITES':
+            if(action.objectName === 'pad'){
+                return {
+                    ...state,
+                    favoritePads: state.favoritePads.filter((item: Pad)=>item.id !== action.payload),
+                }
+            }
             return {
                 ...state,
-                pads: state.pads.filter((item: Pad)=>item.id !== action.payload),
-            }
-        }
-        return {
-            ...state,
-            launches: state.launches.filter((item: Launch)=>item.flight_number !== action.payload),
-        };
+                favoriteLaunches: state.favoriteLaunches.filter((item: Launch)=>item.flight_number !== action.payload),
+            };
     default:
     return state;
 }

@@ -13,8 +13,8 @@ export interface Launch {
     launch_success: boolean
     rocket: Rocket
     launch_site: LaunchSite
-    launch_date_utc: string
-    launch_date_local: string
+    launch_date_utc: string;
+    launch_date_local: string;
 }
 
 export interface LaunchSite {

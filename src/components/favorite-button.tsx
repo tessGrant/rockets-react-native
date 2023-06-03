@@ -7,35 +7,23 @@ import { Launch, Pad } from '../api/types';
 
 type ButtonProps = {
     id: number;
-    item: Launch | Pad;
-    itemName: 'launch' | 'pad';
+    onPress: () => void;
     isFavoriteItem: boolean;
 };
 
-export const ActionFavoriteButton: FC<ButtonProps> = ({
+export const FavoriteButton: FC<ButtonProps> = ({
     id,
-    item,
-    itemName,
+    onPress,
     isFavoriteItem,
 }) => {
-    const dispatch = useDispatch();
-    const [isStarred, setIsStarred] = useState(isFavoriteItem);
-    const favoriteColor = isStarred ? color.pink700 : color.blue700;
-    const handlelOnPress = () => { 
-        if(isStarred){
-            setIsStarred(false);
-            return dispatch(removeFromFavorites(id, itemName));
-        } else {
-            setIsStarred(true);
-            return dispatch(addToFavorites(item, itemName));
-        } 
-    };
+    const favoriteColor = isFavoriteItem ? color.pink700 : color.blue700;
+    
     return (
         <TouchableOpacity
             key={`${id} + toggled`}
-            onPress={() => handlelOnPress()}
+            onPress={onPress}
             style={[styles.favoriteButton, {backgroundColor: favoriteColor}]}>
-            <Text style={styles.successText}>{isStarred ? 'FAVORITE' : 'ADD TO FAVORITE'}</Text>
+            <Text style={styles.successText}>{isFavoriteItem ? 'FAVORITE' : 'ADD TO FAVORITE'}</Text>
         </TouchableOpacity>
     )
 }

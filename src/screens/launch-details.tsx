@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {
     ActivityIndicator,
     Image,
@@ -17,15 +17,40 @@ import {format as timeAgo} from 'timeago.js'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import {InfoRow} from '../components/info-rox'
 import {ComponentId} from '../navigation/types'
+import { FavoriteButton } from '../components/favorite-button'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToFavorites, removeFromFavorites } from '../store/actions'
+import { State } from '../store/reducer'
 interface Props {
     flightNumber: number
+    isFavorite?: boolean
 }
 
 const LaunchDetails: FC<Props & ComponentId> = ({
     flightNumber,
-    componentId
+    componentId,
+    isFavorite
 }) => {
     const {data: launch} = useLaunch(flightNumber, {})
+
+    const dispatch = useDispatch();
+    const favoriteLaunches = useSelector((state: State) => state.favoriteLaunches)
+    const [isStarred, setIsStarred] = useState(isFavorite);
+
+
+    const handlelOnPress = () => { 
+        if(isStarred){
+            return dispatch(removeFromFavorites(launch?.flight_number!, 'launch'));
+        } else {
+            return dispatch(addToFavorites(launch!, 'launch'));
+        } 
+    };
+
+    useEffect(()=>{
+        const isFavoriteButtonState = favoriteLaunches.find(obj => obj.flight_number === launch?.flight_number);
+        setIsStarred(Boolean(isFavoriteButtonState))
+    }, [favoriteLaunches])
+
 
     useEffect(() => {
         if (launch?.mission_name) {
@@ -71,6 +96,11 @@ const LaunchDetails: FC<Props & ComponentId> = ({
                         <Text style={styles.missionNameText}>
                             {launch.mission_name}
                         </Text>
+                        <FavoriteButton
+                            id={launch.flight_number}
+                            isFavoriteItem={Boolean(isStarred)}
+                            onPress={handlelOnPress}
+                        />
                         <View style={styles.subtitleContainer}>
                             <Text
                                 style={[

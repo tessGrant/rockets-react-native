@@ -8,6 +8,7 @@ const fetcher = async (input: RequestInfo, init: RequestInit) => {
     if (!response.ok) {
         throw Error(response.statusText)
     }
+
     return await response.json()
 }
 
@@ -45,7 +46,7 @@ export function useSpaceXPaginated<T>(path: string, options: any) {
 // Launches
 
 export function useLaunchesPaginated(options: any) {
-    return useSpaceXPaginated<Launch[]>('/launches/past', options)
+    return useSpaceXPaginated<Launch[]>('/launches/past', options);
 }
 
 export function useLaunch(flightNumber: number, options: any) {
