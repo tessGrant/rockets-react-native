@@ -1,10 +1,10 @@
 import React, {VFC} from 'react'
-import {FlatList, SafeAreaView, Text} from 'react-native'
+import {FlatList, SafeAreaView} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {EmptyState} from '../components/empty-state'
 import {PadListCell} from '../components/pad-list-cell'
 import {Pad} from '../api/types'
-import {FAVORITE_STACK, PADS_STACK} from '../navigation/navigation'
+import {PADS_STACK} from '../navigation/navigation'
 import {usePadsPaginated} from '../api/use-space-x'
 import {PadDetailLayout} from './pad-details'
 

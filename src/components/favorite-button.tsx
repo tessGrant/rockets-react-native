@@ -1,11 +1,8 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { color } from '../util/colors';
-import { useDispatch } from 'react-redux';
-import { addToFavorites, removeFromFavorites } from '../store/actions';
-import { Launch, Pad } from '../api/types';
 
-type ButtonProps = {
+interface ButtonProps {
     id: number;
     onPress: () => void;
     isFavoriteItem: boolean;

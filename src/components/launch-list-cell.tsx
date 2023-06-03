@@ -16,11 +16,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FavoriteButton } from './favorite-button'
 import { State } from '../store/reducer'
 
-export const LaunchListCell: FC<{
+interface LaunchCellProp {
     launch: Launch;
     onPress: (launch: Launch) => void;
     isFavorite?:boolean;
-}> = ({launch, onPress, isFavorite}) => {
+}
+
+export const LaunchListCell: FC<LaunchCellProp> = ({launch, onPress, isFavorite}) => {
     const imageUrl = launch.links.flickr_images[0] ?? launch.links.mission_patch_small;
     const backgroundColor = launch.launch_success
         ? color.green700

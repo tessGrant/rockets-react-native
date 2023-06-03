@@ -21,12 +21,14 @@ import { FavoriteButton } from '../components/favorite-button'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToFavorites, removeFromFavorites } from '../store/actions'
 import { State } from '../store/reducer'
-interface Props {
+
+
+interface LaunchDetailsProps {
     flightNumber: number
     isFavorite?: boolean
 }
 
-const LaunchDetails: FC<Props & ComponentId> = ({
+const LaunchDetails: FC<LaunchDetailsProps & ComponentId> = ({
     flightNumber,
     componentId,
     isFavorite
@@ -193,7 +195,7 @@ const LaunchDetails: FC<Props & ComponentId> = ({
 
 export const LaunchDetailLayoutName = 'LaunchDetail'
 
-export const LaunchDetailLayout = (props: Props): Layout<Props> => ({
+export const LaunchDetailLayout = (props: LaunchDetailsProps): Layout<LaunchDetailsProps> => ({
     component: {
         name: LaunchDetailLayoutName,
         passProps: props,

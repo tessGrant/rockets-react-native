@@ -17,12 +17,12 @@ import { State } from '../store/reducer'
 import { addToFavorites, removeFromFavorites } from '../store/actions'
 import { FavoriteButton } from '../components/favorite-button'
 
-interface Props {
+interface PadDetailsProps {
     siteId: string;
     isFavorite?: boolean;
 }
 
-const PadDetails: FC<Props & ComponentId> = ({siteId, isFavorite, componentId}) => {
+const PadDetails: FC<PadDetailsProps & ComponentId> = ({siteId, isFavorite, componentId}) => {
     const {data: pad} = usePad(siteId, {})
     const {data: launches} = useRecentLaunches(pad?.site_id)
 
@@ -166,7 +166,7 @@ const RecentLaunches: FC<{launches?: Launch[]}> = ({launches}) => {
 
 export const PadDetailLayoutName = 'PadDetail'
 
-export const PadDetailLayout = (props: Props): Layout<Props> => ({
+export const PadDetailLayout = (props: PadDetailsProps): Layout<PadDetailsProps> => ({
     component: {
         name: PadDetailLayoutName,
         passProps: props,

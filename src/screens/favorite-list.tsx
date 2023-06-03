@@ -50,7 +50,7 @@ const FavoritesList: VFC = () => {
                     >Pads</Text>
                 </TouchableOpacity>
             </View>
-            {/* End Favorite Lisst Toggle */}
+            {/* End Favorite List Toggle */}
 
             {!Boolean(pads.length) && tab === 'pads' && (<View><Text style={styles.styledNoDataText}>No Favorite Pads</Text></View>)}
             {!Boolean(launches.length) && tab === 'launches' && (<View><Text style={styles.styledNoDataText}>No Favorite launches</Text></View>)}
@@ -64,7 +64,7 @@ const FavoritesList: VFC = () => {
                     style={{height: '100%'}}
                 />
             }
-            
+
             {(Boolean(launches.length) && tab === 'launches') &&
                 <FlatList
                     data={launches?.flat() ?? []}

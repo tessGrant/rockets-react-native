@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { State } from '../store/reducer'
 import { addToFavorites, removeFromFavorites } from '../store/actions'
 
-interface Props {
+interface PadCellProps {
     pad: Pad;
     onPress: (pad: Pad) => void;
     isFavorite?: boolean
 }
 
-export const PadListCell: FC<Props> = ({pad, onPress, isFavorite}) => {
+export const PadListCell: FC<PadCellProps> = ({pad, onPress, isFavorite}) => {
     const statusColor =
         pad.status === 'active'
             ? color.green700

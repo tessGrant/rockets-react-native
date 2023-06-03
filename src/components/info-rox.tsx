@@ -3,6 +3,27 @@ import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {color} from '../util/colors'
 
+interface InfoRowProp {
+    iconName: string
+    iconText: string
+    title: string
+    subtitle: string
+    style?: StyleProp<ViewStyle>
+}
+
+export const InfoRow: FC<InfoRowProp> = ({iconName, iconText, title, subtitle, style}) => {
+    return (
+        <View style={style}>
+            <View style={styles.infoTitleContainer}>
+                <Icon size={12} name={iconName} style={styles.infoIcon} />
+                <Text style={styles.infoIconText}>{iconText}</Text>
+            </View>
+            <Text style={styles.infoTitle}>{title}</Text>
+            <Text style={styles.infoSubtitle}>{subtitle}</Text>
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     infoTitleContainer: {
         flexDirection: 'row',
@@ -29,21 +50,3 @@ const styles = StyleSheet.create({
     }
 })
 
-export const InfoRow: FC<{
-    iconName: string
-    iconText: string
-    title: string
-    subtitle: string
-    style?: StyleProp<ViewStyle>
-}> = ({iconName, iconText, title, subtitle, style}) => {
-    return (
-        <View style={style}>
-            <View style={styles.infoTitleContainer}>
-                <Icon size={12} name={iconName} style={styles.infoIcon} />
-                <Text style={styles.infoIconText}>{iconText}</Text>
-            </View>
-            <Text style={styles.infoTitle}>{title}</Text>
-            <Text style={styles.infoSubtitle}>{subtitle}</Text>
-        </View>
-    )
-}

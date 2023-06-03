@@ -10,6 +10,7 @@ import {EmptyState} from '../components/empty-state'
 import { useDispatch, useSelector } from 'react-redux'
 import { getLaunchesOrPads } from '../store/actions'
 import { State } from '../store/reducer'
+
 const PAGE_SIZE = 10
 
 const LaunchesList: VFC = () => {

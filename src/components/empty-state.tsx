@@ -8,11 +8,13 @@ import {
     ViewStyle
 } from 'react-native'
 
-export const EmptyState: FC<{
-    loading?: boolean
-    text?: string
-    style?: StyleProp<ViewStyle>
-}> = ({loading, text, style}) => {
+interface EmptyStateProp {
+    loading?: boolean;
+    text?: string;
+    style?: StyleProp<ViewStyle>;
+}
+
+export const EmptyState: FC<EmptyStateProp> = ({loading, text, style}) => {
     return (
         <View style={[styles.container, style]}>
             {loading ? <ActivityIndicator /> : null}
