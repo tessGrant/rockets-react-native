@@ -1,23 +1,23 @@
 import {Dimensions, StyleSheet} from 'react-native'
-import {applyAlpha, color} from '../util/colors'
+import {applyAlpha, color} from '../../util/colors'
 
 const {height, width} = Dimensions.get('window')
 
 export const styles = StyleSheet.create({
-    loading: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    gradient: {
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    image: {
         width,
         height: height * 0.6,
-        justifyContent: 'flex-end'
+        resizeMode: 'cover'
     },
     imageOverlay: {
         flex: 1,
@@ -47,13 +47,6 @@ export const styles = StyleSheet.create({
         borderRadius: 4,
         overflow: 'hidden'
     },
-    description: {
-        fontSize: 14,
-        fontWeight: '500',
-        color: color.shade700,
-        paddingTop: 24,
-        paddingHorizontal: 20
-    },
     infoBox: {
         flex: 1,
         marginTop: 24,
@@ -63,12 +56,17 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 12
     },
-    recentLaunches: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: color.shade700,
-        marginLeft: 20,
-        paddingTop: 24,
-        paddingBottom: 16
+    youtubeContainer: {
+        marginTop: 24,
+        paddingHorizontal: 20
+    },
+    imageListContainer: {
+        marginTop: 24,
+        marginHorizontal: 20
+    },
+    flickrImage: {
+        marginVertical: 6,
+        width: '100%',
+        height: 300
     }
 })

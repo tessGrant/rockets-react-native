@@ -9,23 +9,23 @@ import {
     View
 } from 'react-native'
 import {Layout, Navigation} from 'react-native-navigation'
-import {color} from '../util/colors'
-import {useLaunch} from '../api/use-space-x'
-import {styles} from './launch-details.styles'
-import {formatDateTime} from '../util/format-date'
+import {color} from '../../util/colors'
+import {useLaunch} from '../../api/useSpaceX'
+import {styles} from './styles'
+import {formatDateTime} from '../../util/formatDate'
 import {format as timeAgo} from 'timeago.js'
 import YoutubeIframe from 'react-native-youtube-iframe'
-import {InfoRow} from '../components/info-rox'
-import {ComponentId} from '../navigation/types'
-import { FavoriteButton } from '../components/favorite-button'
+import {InfoRow} from '../../components/infoRow'
+import { FavoriteButton } from '../../components/favoriteButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToFavorites, removeFromFavorites } from '../store/actions'
-import { State } from '../store/reducer'
+import { addToFavorites, removeFromFavorites } from '../../store/actions'
+import { State } from '../../store/reducer'
+import { ComponentId } from '../../types'
 
 
 interface LaunchDetailsProps {
-    flightNumber: number
-    isFavorite?: boolean
+    flightNumber: number;
+    isFavorite?: boolean;
 }
 
 const LaunchDetails: FC<LaunchDetailsProps & ComponentId> = ({

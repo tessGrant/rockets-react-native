@@ -4,25 +4,22 @@ import {color} from '../util/colors'
 import LaunchesList, {
     LaunchesListLayout,
     LaunchesListLayoutName
-} from '../screens/launches-list'
-import {ComponentProvider, ImageRequireSource} from 'react-native'
+} from '../screens/LaunchListScreen'
+import { ImageRequireSource} from 'react-native'
 import LaunchDetails, {
-    LaunchDetailLayout,
     LaunchDetailLayoutName
-} from '../screens/launch-details'
+} from '../screens/LaunchDeatailsScreen'
 import PadsList, {
     PadsListLayout,
     PadsListLayoutName
-} from '../screens/pads-list'
+} from '../screens/PadsListScreen'
 import PadDetails, {
-    PadDetailLayout,
     PadDetailLayoutName
-} from '../screens/pad-details'
-import FavoritesList, { FavoritesListLayout, FavoritesListLayoutName } from '../screens/favorite-list'
+} from '../screens/PadDetailsScreen'
+import FavoritesList, { FavoritesListLayout, FavoritesListLayoutName } from '../screens/FavoriteListsScreen'
 import { Provider } from 'react-redux'
 import { legacy_createStore as createStore} from 'redux'
 import { rootReducer } from '../store/reducer'
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const store = createStore(rootReducer);
 

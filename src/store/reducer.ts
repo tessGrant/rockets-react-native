@@ -1,4 +1,4 @@
-import { Launch, Pad } from "../api/types";
+import { Launch, Pad } from "../types";
 
 export interface State {
     launches: Launch[];

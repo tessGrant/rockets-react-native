@@ -1,15 +1,15 @@
 import React, {VFC, useEffect} from 'react'
 import {FlatList, SafeAreaView} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
-import {Launch} from '../api/types'
-import {useLaunchesPaginated} from '../api/use-space-x'
-import {LAUNCHES_STACK} from '../navigation/navigation'
-import {LaunchDetailLayout} from './launch-details'
-import {LaunchListCell} from '../components/launch-list-cell'
-import {EmptyState} from '../components/empty-state'
+import {Launch} from '../../types'
+import {useLaunchesPaginated} from '../../api/useSpaceX'
+import {LAUNCHES_STACK} from '../../navigation/navigation'
+import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
+import {LaunchListCell} from '../../components/launchListCell'
+import {EmptyState} from '../../components/emptyState'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLaunchesOrPads } from '../store/actions'
-import { State } from '../store/reducer'
+import { getLaunchesOrPads } from '../../store/actions'
+import { State } from '../../store/reducer'
 
 const PAGE_SIZE = 10
 

@@ -1,15 +1,15 @@
 import React, {VFC, useEffect, useState} from 'react'
 import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
-import {Launch, Pad} from '../api/types'
-import {FAVORITE_STACK} from '../navigation/navigation'
-import {LaunchDetailLayout} from './launch-details'
-import {LaunchListCell} from '../components/launch-list-cell'
+import {Launch, Pad} from '../../types'
+import {FAVORITE_STACK} from '../../navigation/navigation'
+import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
+import {LaunchListCell} from '../../components/launchListCell'
 import { useSelector } from 'react-redux'
-import { State } from '../store/reducer'
-import { PadListCell } from '../components/pad-list-cell'
-import { PadDetailLayout } from './pad-details'
-import { color } from '../util/colors'
+import { State } from '../../store/reducer'
+import { PadListCell } from '../../components/padListCell'
+import { PadDetailLayout } from '../PadDetailsScreen'
+import { color } from '../../util/colors'
 
 const FavoritesList: VFC = () => {
     const launches = useSelector((state: State) => state.favoriteLaunches);

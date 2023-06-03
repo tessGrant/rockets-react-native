@@ -1,7 +1,7 @@
 import useSWR, {Fetcher} from 'swr'
 import useSWRInfinite, {SWRInfiniteKeyLoader} from 'swr/infinite'
 import {config} from '../config'
-import {Launch, Pad} from './types'
+import {Launch, Pad} from '../types'
 
 const fetcher = async (input: RequestInfo, init: RequestInit) => {
     const response = await fetch(input, init)

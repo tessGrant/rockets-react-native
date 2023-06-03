@@ -1,6 +1,10 @@
 // NOTICE: These types does not necessarily contain all properties returned by the SpaceX API.
 // Find more information about API responses here: https://docs.spacexdata.com/?version=latest
 
+export interface ComponentId {
+    componentId: string
+}
+
 export interface Launch {
     flight_number: number
     links: {
