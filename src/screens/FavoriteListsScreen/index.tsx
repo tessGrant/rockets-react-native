@@ -1,15 +1,16 @@
 import React, {VFC, useEffect, useState} from 'react'
 import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
-import {Launch, Pad} from '../api/types'
-import {FAVORITE_STACK} from '../navigation/navigation'
-import {LaunchDetailLayout} from './launch-details'
-import {LaunchListCell} from '../components/launch-list-cell'
-import { useSelector } from 'react-redux'
-import { State } from '../store/reducer'
-import { PadListCell } from '../components/pad-list-cell'
-import { PadDetailLayout } from './pad-details'
-import { color } from '../util/colors'
+import {Launch, Pad} from '../../types'
+import {FAVORITE_STACK, store} from '../../navigation/navigation'
+import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
+import {LaunchListCell} from '../../components/launchListCell'
+import { Provider, useSelector } from 'react-redux'
+import { State } from '../../store/reducer'
+import { PadListCell } from '../../components/padListCell'
+import { PadDetailLayout } from '../PadDetailsScreen'
+import { color } from '../../util/colors'
+import { styles } from './styles'
 
 const FavoritesList: VFC = () => {
     const launches = useSelector((state: State) => state.favoriteLaunches);
@@ -30,6 +31,8 @@ const FavoritesList: VFC = () => {
     }, [launches])
 
     return (
+        <Provider store={store}>
+
         <SafeAreaView>
             {/* Favorite Lisst Toggle */}
             <View style={styles.tabSwitcher}>
@@ -52,8 +55,8 @@ const FavoritesList: VFC = () => {
             </View>
             {/* End Favorite List Toggle */}
 
-            {!Boolean(pads.length) && tab === 'pads' && (<View><Text style={styles.styledNoDataText}>No Favorite Pads</Text></View>)}
-            {!Boolean(launches.length) && tab === 'launches' && (<View><Text style={styles.styledNoDataText}>No Favorite launches</Text></View>)}
+            {!pads.length && tab === 'pads' && (<View><Text style={styles.styledNoDataText}>No Favorite Pads</Text></View>)}
+            {!launches.length && tab === 'launches' && (<View><Text style={styles.styledNoDataText}>No Favorite launches</Text></View>)}
             
             {Boolean(pads.length) && tab === 'pads' && 
                 <FlatList
@@ -76,8 +79,10 @@ const FavoritesList: VFC = () => {
             }
             
         </SafeAreaView>
+        </Provider>
     )
 }
+
 export const FavoritesListLayoutName = 'FavoritesList'
 export const FavoritesListLayout = (): LayoutComponent => ({
     name: FavoritesListLayoutName,
@@ -93,25 +98,11 @@ export const FavoritesListLayout = (): LayoutComponent => ({
     }
 })
 
-export default FavoritesList
+FavoritesList.displayName = FavoritesListLayoutName;
+const WrappedFavoritesList = () => (
+    <Provider store={store}>
+        <FavoritesList />
+    </Provider>
+);
 
-const styles = StyleSheet.create({
-    tabSwitcher: {
-        flexDirection: 'row',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: color.shade400
-    },
-    tabSwitcherText: {
-        fontSize: 16,
-        width: 150,
-        textAlign: 'center'
-    },
-    styledNoDataText: {
-        marginHorizontal: 40,
-        marginVertical: 40,
-        fontSize: 18,
-        fontStyle: 'italic'
-    }
-});
+export default WrappedFavoritesList;

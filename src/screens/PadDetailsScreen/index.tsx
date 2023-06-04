@@ -2,20 +2,19 @@ import React, {FC, useEffect, useState} from 'react'
 import {ActivityIndicator, Platform, ScrollView, Text, View} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Layout, Navigation} from 'react-native-navigation'
-import {applyAlpha, color, randomColor} from '../util/colors'
-import {InfoRow} from '../components/info-rox'
-import {LaunchListCell} from '../components/launch-list-cell'
-import {EmptyState} from '../components/empty-state'
-import {Launch} from '../api/types'
-import {PADS_STACK} from '../navigation/navigation'
-import {usePad, useRecentLaunches} from '../api/use-space-x'
-import {LaunchDetailLayout} from './launch-details'
-import {styles} from './pad-details.styles'
-import {ComponentId} from '../navigation/types'
-import { useDispatch, useSelector } from 'react-redux'
-import { State } from '../store/reducer'
-import { addToFavorites, removeFromFavorites } from '../store/actions'
-import { FavoriteButton } from '../components/favorite-button'
+import {color, randomColor} from '../../util/colors'
+import {InfoRow} from '../../components/infoRow'
+import {LaunchListCell} from '../../components/launchListCell'
+import {EmptyState} from '../../components/emptyState'
+import {ComponentId, Launch, Pad} from '../../types'
+import {PADS_STACK, store} from '../../navigation/navigation'
+import {usePad, useRecentLaunches} from '../../api/useSpaceX'
+import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
+import {styles} from './styles'
+import { Provider, useDispatch, useSelector } from 'react-redux'
+import { State } from '../../store/reducer'
+import { addToFavorites, removeFromFavorites } from '../../store/actions'
+import { FavoriteButton } from '../../components/favoriteButton'
 
 interface PadDetailsProps {
     siteId: string;
@@ -32,11 +31,11 @@ const PadDetails: FC<PadDetailsProps & ComponentId> = ({siteId, isFavorite, comp
     const favoritePads = useSelector((state: State) => state.favoritePads)
     const [isStarred, setIsStarred] = useState(isFavorite);
 
-    const handlelOnPress = () => { 
+    const handlelOnPress = (item: Pad) => { 
         if(isStarred){
-            return dispatch(removeFromFavorites(pad?.id!, 'pad'));
+            return dispatch(removeFromFavorites(item.id, 'pad'));
         } else {
-            return dispatch(addToFavorites(pad!, 'pad'));
+            return dispatch(addToFavorites(item, 'pad'));
         } 
     };
 
@@ -86,7 +85,7 @@ const PadDetails: FC<PadDetailsProps & ComponentId> = ({siteId, isFavorite, comp
                         <FavoriteButton
                             id={pad.id}
                             isFavoriteItem={Boolean(isStarred)}
-                            onPress={handlelOnPress}
+                            onPress={() => handlelOnPress(pad)}
                         />
                         <View style={styles.subtitleContainer}>
                             <Text
@@ -178,4 +177,11 @@ export const PadDetailLayout = (props: PadDetailsProps): Layout<PadDetailsProps>
     }
 })
 
-export default PadDetails
+PadDetails.displayName = PadDetailLayoutName;
+const WrappedPadDetails = (props: PadDetailsProps & ComponentId) => (
+    <Provider store={store}>
+        <PadDetails {...props} />
+    </Provider>
+);
+
+export default WrappedPadDetails

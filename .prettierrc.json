@@ -1,0 +1,10 @@
+{
+    "bracketSpacing": false,
+    "singleQuote": true,
+    "printWidth": 80,
+    "semi": true,
+    "arrowParens": "avoid",
+    "importOrder": "['^[./]']",
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}
