@@ -70,16 +70,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn ts:check"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,ts,jsx,tsx}": [
       "lint",
+      "ts:check",
       "prettier"
-    ],
-    "{package.json, src/**/*.{js,ts,jsx,tsx,json}}": [
-      "prettier --check"
     ]
   }
 }
