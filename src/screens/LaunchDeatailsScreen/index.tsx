@@ -17,10 +17,11 @@ import {format as timeAgo} from 'timeago.js'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import {InfoRow} from '../../components/infoRow'
 import { FavoriteButton } from '../../components/favoriteButton'
-import { useDispatch, useSelector } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import { addToFavorites, removeFromFavorites } from '../../store/actions'
 import { State } from '../../store/reducer'
-import { ComponentId } from '../../types'
+import { ComponentId, Launch } from '../../types'
+import { store } from '../../navigation/navigation'
 
 
 interface LaunchDetailsProps {
@@ -40,11 +41,11 @@ const LaunchDetails: FC<LaunchDetailsProps & ComponentId> = ({
     const [isStarred, setIsStarred] = useState(isFavorite);
 
 
-    const handlelOnPress = () => { 
+    const handlelOnPress = (item: Launch) => { 
         if(isStarred){
-            return dispatch(removeFromFavorites(launch?.flight_number!, 'launch'));
+            return dispatch(removeFromFavorites(flightNumber, 'launch'));
         } else {
-            return dispatch(addToFavorites(launch!, 'launch'));
+            return dispatch(addToFavorites(item, 'launch'));
         } 
     };
 
@@ -101,7 +102,7 @@ const LaunchDetails: FC<LaunchDetailsProps & ComponentId> = ({
                         <FavoriteButton
                             id={launch.flight_number}
                             isFavoriteItem={Boolean(isStarred)}
-                            onPress={handlelOnPress}
+                            onPress={() => handlelOnPress(launch)}
                         />
                         <View style={styles.subtitleContainer}>
                             <Text
@@ -207,4 +208,11 @@ export const LaunchDetailLayout = (props: LaunchDetailsProps): Layout<LaunchDeta
     }
 })
 
-export default LaunchDetails
+LaunchDetails.displayName = LaunchDetailLayoutName;
+const WrappedLaunchDetails = (props: LaunchDetailsProps & ComponentId) => (
+    <Provider store={store}>
+        <LaunchDetails {...props} />
+    </Provider>
+);
+
+export default WrappedLaunchDetails

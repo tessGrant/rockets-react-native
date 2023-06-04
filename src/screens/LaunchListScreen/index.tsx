@@ -3,11 +3,11 @@ import {FlatList, SafeAreaView} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {Launch} from '../../types'
 import {useLaunchesPaginated} from '../../api/useSpaceX'
-import {LAUNCHES_STACK} from '../../navigation/navigation'
+import {LAUNCHES_STACK, store} from '../../navigation/navigation'
 import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
 import {LaunchListCell} from '../../components/launchListCell'
 import {EmptyState} from '../../components/emptyState'
-import { useDispatch, useSelector } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import { getLaunchesOrPads } from '../../store/actions'
 import { State } from '../../store/reducer'
 
@@ -41,20 +41,20 @@ const LaunchesList: VFC = () => {
     }
 
     return (
-        <SafeAreaView>
-            <FlatList
-                data={launches}
-                renderItem={item => (
-                    <LaunchListCell 
-                        launch={item.item}
-                        onPress={goToLaunch}
-                    />
-                )}
-                onEndReached={() => setSize(size + 1)}
-                style={{height: '100%'}}
-            />
+            <SafeAreaView>
+                <FlatList
+                    data={launches}
+                    renderItem={item => (
+                        <LaunchListCell 
+                            launch={item.item}
+                            onPress={goToLaunch}
+                        />
+                    )}
+                    onEndReached={() => setSize(size + 1)}
+                    style={{height: '100%'}}
+                />
 
-        </SafeAreaView>
+            </SafeAreaView>
     )
 }
 
@@ -74,4 +74,12 @@ export const LaunchesListLayout = (): LayoutComponent => ({
     }
 })
 
-export default LaunchesList
+LaunchesList.displayName = LaunchesListLayoutName;
+const WrappedLaunchesList = () => (
+    <Provider store={store}>
+        <LaunchesList />
+    </Provider>
+);
+  
+
+export default WrappedLaunchesList

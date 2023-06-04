@@ -38,7 +38,7 @@ export const color = {
     yellow700: '#dfc538'
 }
 
-export const applyAlpha = (color: string, alpha: number = 1) => {
+export const applyAlpha = (color: string, alpha = 1) => {
     const alphaClamp = Math.min(Math.max(alpha, 0), 1)
     const alpha256 = (alphaClamp * 255).toFixed()
     const alphaBase16 = Number(alpha256).toString(16)

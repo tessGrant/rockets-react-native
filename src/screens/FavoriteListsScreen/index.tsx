@@ -2,10 +2,10 @@ import React, {VFC, useEffect, useState} from 'react'
 import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {Launch, Pad} from '../../types'
-import {FAVORITE_STACK} from '../../navigation/navigation'
+import {FAVORITE_STACK, store} from '../../navigation/navigation'
 import {LaunchDetailLayout} from '../LaunchDeatailsScreen'
 import {LaunchListCell} from '../../components/launchListCell'
-import { useSelector } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { State } from '../../store/reducer'
 import { PadListCell } from '../../components/padListCell'
 import { PadDetailLayout } from '../PadDetailsScreen'
@@ -30,6 +30,8 @@ const FavoritesList: VFC = () => {
     }, [launches])
 
     return (
+        <Provider store={store}>
+
         <SafeAreaView>
             {/* Favorite Lisst Toggle */}
             <View style={styles.tabSwitcher}>
@@ -52,8 +54,8 @@ const FavoritesList: VFC = () => {
             </View>
             {/* End Favorite List Toggle */}
 
-            {!Boolean(pads.length) && tab === 'pads' && (<View><Text style={styles.styledNoDataText}>No Favorite Pads</Text></View>)}
-            {!Boolean(launches.length) && tab === 'launches' && (<View><Text style={styles.styledNoDataText}>No Favorite launches</Text></View>)}
+            {!pads.length && tab === 'pads' && (<View><Text style={styles.styledNoDataText}>No Favorite Pads</Text></View>)}
+            {!launches.length && tab === 'launches' && (<View><Text style={styles.styledNoDataText}>No Favorite launches</Text></View>)}
             
             {Boolean(pads.length) && tab === 'pads' && 
                 <FlatList
@@ -76,6 +78,7 @@ const FavoritesList: VFC = () => {
             }
             
         </SafeAreaView>
+        </Provider>
     )
 }
 export const FavoritesListLayoutName = 'FavoritesList'
@@ -93,7 +96,15 @@ export const FavoritesListLayout = (): LayoutComponent => ({
     }
 })
 
-export default FavoritesList
+FavoritesList.displayName = FavoritesListLayoutName;
+const WrappedFavoritesList = () => (
+    <Provider store={store}>
+        <FavoritesList />
+    </Provider>
+);
+
+
+export default WrappedFavoritesList;
 
 const styles = StyleSheet.create({
     tabSwitcher: {

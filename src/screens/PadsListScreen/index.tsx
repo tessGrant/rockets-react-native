@@ -4,9 +4,10 @@ import {LayoutComponent, Navigation} from 'react-native-navigation'
 import {EmptyState} from '../../components/emptyState'
 import {PadListCell} from '../../components/padListCell'
 import {Pad} from '../../types'
-import {PADS_STACK} from '../../navigation/navigation'
+import {PADS_STACK, store} from '../../navigation/navigation'
 import {usePadsPaginated} from '../../api/useSpaceX'
 import {PadDetailLayout} from '../PadDetailsScreen'
+import { Provider } from 'react-redux'
 
 const PAGE_SIZE = 10
 
@@ -53,4 +54,11 @@ export const PadsListLayout = (): LayoutComponent => ({
     }
 })
 
-export default PadsList
+PadsList.displayName = PadsListLayoutName;
+const WrappedPadsList = () => (
+    <Provider store={store}>
+        <PadsList />
+    </Provider>
+);
+
+export default WrappedPadsList;
