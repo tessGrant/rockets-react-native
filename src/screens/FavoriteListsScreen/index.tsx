@@ -10,6 +10,7 @@ import { State } from '../../store/reducer'
 import { PadListCell } from '../../components/padListCell'
 import { PadDetailLayout } from '../PadDetailsScreen'
 import { color } from '../../util/colors'
+import { styles } from './styles'
 
 const FavoritesList: VFC = () => {
     const launches = useSelector((state: State) => state.favoriteLaunches);
@@ -81,6 +82,7 @@ const FavoritesList: VFC = () => {
         </Provider>
     )
 }
+
 export const FavoritesListLayoutName = 'FavoritesList'
 export const FavoritesListLayout = (): LayoutComponent => ({
     name: FavoritesListLayoutName,
@@ -103,26 +105,4 @@ const WrappedFavoritesList = () => (
     </Provider>
 );
 
-
 export default WrappedFavoritesList;
-
-const styles = StyleSheet.create({
-    tabSwitcher: {
-        flexDirection: 'row',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: color.shade400
-    },
-    tabSwitcherText: {
-        fontSize: 16,
-        width: 150,
-        textAlign: 'center'
-    },
-    styledNoDataText: {
-        marginHorizontal: 40,
-        marginVertical: 40,
-        fontSize: 18,
-        fontStyle: 'italic'
-    }
-});

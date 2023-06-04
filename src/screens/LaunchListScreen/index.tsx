@@ -81,5 +81,4 @@ const WrappedLaunchesList = () => (
     </Provider>
 );
   
-
 export default WrappedLaunchesList

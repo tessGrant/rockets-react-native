@@ -23,7 +23,6 @@ import { State } from '../../store/reducer'
 import { ComponentId, Launch } from '../../types'
 import { store } from '../../navigation/navigation'
 
-
 interface LaunchDetailsProps {
     flightNumber: number;
     isFavorite?: boolean;
